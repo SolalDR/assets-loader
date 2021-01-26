@@ -25,10 +25,11 @@ export class Manager extends Emitter {
   }
 
   initDefaultGroup(baseUrl: string) {
-    const group = this.addGroup({ name: 'default', baseUrl });
+    const group = new Group({ name: 'default', baseUrl });
     group.on('load', () => {
       this.emit('load', group)
     })
+    this.groups.set('default', group);
   }
 
   loadGroup(GroupOptions) {
