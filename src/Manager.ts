@@ -17,7 +17,18 @@ export class Manager extends Emitter {
   } = {}) {
     super();
     this.rules = rules;
-    this.addGroup({ name: 'default', baseUrl });
+    this.initDefaultGroup(baseUrl)
+  }
+
+  get defaultGroup() {
+    return this.groups.get('default')
+  }
+
+  initDefaultGroup(baseUrl: string) {
+    const group = this.addGroup({ name: 'default', baseUrl });
+    group.on('load', () => {
+      this.emit('load', group)
+    })
   }
 
   loadGroup(GroupOptions) {
@@ -37,10 +48,7 @@ export class Manager extends Emitter {
   }
 
   addGroup(args: GroupOptions | FileArray): Group {
-    const group = new Group(args);
-    this.groups.set(group.name, group)
-    group.setContext(this);
-    if (group) return group;
+    return this.defaultGroup.addGroup(args)
   }
 
   load(args: LoadArgument = [...this.groups.values()]): Promise<File[]|File> {

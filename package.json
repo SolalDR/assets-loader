@@ -1,6 +1,6 @@
 {
   "name": "@solaldr/loader",
-  "version": "0.0.5",
+  "version": "0.0.7",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
   "browser": "dist/index.umd.js",
@@ -23,7 +23,8 @@
     "build": "rollup -c",
     "dev": "rollup -c -w",
     "test": "node test/test.js",
-    "pretest": "npm run build"
+    "pretest": "npm run build",
+    "deploy": "npm run build && npm publish"
   },
   "files": [
     "dist"
