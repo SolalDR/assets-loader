@@ -70,6 +70,7 @@ export class Manager extends Emitter {
         this.files.set(file.computedPath, file);
         file.subject = object;
         file.status = LoadingStatus.LOADED
+        file.handleEventsIfLoaded()
         resolve(file.subject);
       }).catch((error) => {
         console.error(error);

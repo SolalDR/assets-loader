@@ -49,6 +49,19 @@ export class File extends Emitter {
     return f;
   }
 
+  get isLoaded(): boolean {
+    return this.status === LoadingStatus.LOADED
+  }
+
+  handleEventsIfLoaded(bubling = true) {
+    if (this.isLoaded) {
+      this.emit('load', this)
+    }
+    if (bubling && this.parent) {
+      this.parent.handleEventsIfLoaded(bubling)
+    }
+  }
+
   computePath(): string {
     let parent = this.parent;
     let baseUrl = ''

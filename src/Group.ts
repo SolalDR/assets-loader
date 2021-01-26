@@ -25,6 +25,8 @@ export class Group extends Emitter {
   context?: Manager
   parent?: Group = null
 
+  private _isLoaded: boolean = true
+
   constructor(args: GroupOptions | FileArray = {}) {
     super();
     if (args instanceof Array) return Group.fromFileArray(args)
@@ -46,6 +48,7 @@ export class Group extends Emitter {
     const file = new File(def);
     file.parent = this
     this.files.push(file);
+    this._isLoaded = false;
     return file;
   }
 
@@ -89,7 +92,20 @@ export class Group extends Emitter {
   }
 
   get isLoaded(): boolean {
-    return !this.files.find(file => file.status === LoadingStatus.PENDING || file.status === LoadingStatus.IDLE);
+    if (this._isLoaded) return this._isLoaded;
+    const isFilesLoaded = !this.files.find(file => file.status === LoadingStatus.PENDING || file.status === LoadingStatus.IDLE);
+    const isGroupsLoaded = !this.groups.find(group => !group.isLoaded)
+    this._isLoaded = isFilesLoaded && isGroupsLoaded
+    return this._isLoaded
+  }
+
+  handleEventsIfLoaded(bubling = true) {
+    if (this.isLoaded) {
+      this.emit('load', this);
+    }
+    if (bubling && this.parent) {
+      this.parent.handleEventsIfLoaded(bubling)
+    }
   }
 
   private static fromFileArray(files: FileArray): Group {
