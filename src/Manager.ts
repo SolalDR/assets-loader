@@ -29,7 +29,14 @@ export class Manager extends Emitter {
     group.on('load', () => {
       this.emit('load', group)
     })
+    group.on('progress', (data) => {
+      this.emit('progress', data)
+    })
     this.groups.set('default', group);
+  }
+
+  get(name) {
+    return this.defaultGroup.get(name)
   }
 
   loadGroup(GroupOptions) {
@@ -48,6 +55,12 @@ export class Manager extends Emitter {
     return file;
   }
 
+  addFiles(files: FileArray): void {
+    files.forEach(file => {
+      this.addFile(file);
+    })
+  }
+
   addGroup(args: GroupOptions | FileArray): Group {
     return this.defaultGroup.addGroup(args)
   }
@@ -58,14 +71,23 @@ export class Manager extends Emitter {
     if (args instanceof File) files = [args]
     if (args instanceof Array && args[0] instanceof File) files = args
     if (args instanceof Array && args[0] instanceof Group)
-      files = (args as Group[]).reduce((acc: Array<File>, value: Group) => acc.concat(value.idleFiles), [])
+      files = (args as Group[]).reduce((acc: Array<File>, group: Group) => {
+        return acc.concat(group.idleFiles)
+      }, [])
 
     const promiseFiles = files.map(file => new Promise<File>((resolve, reject) => {
-      const loader = this.rules.find((rule: Rule) => {
+      const rule = this.rules.find((rule: Rule) => {
         if (file.path.match(rule.test)) {
           return true
         }
-      }).loader
+      })
+      
+      if (!rule) {
+        console.error(`Loader: No loader for file "${file.path}"`) 
+        return
+      }
+
+      const loader = rule.loader
 
       file.status = LoadingStatus.PENDING;
       file.computePath();

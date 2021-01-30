@@ -17,13 +17,13 @@ export class ThreeLoader extends Loader {
         file.computedPath,
 
         // onLoad
-        (event) => {
+        (event, test) => {
           file.emit('load', event);
           resolve(event);
         },
 
         // onProgress
-        (progress) => {
+        (progress: ProgressEvent) => {
           file.emit('progress', progress)
         },
 

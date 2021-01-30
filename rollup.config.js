@@ -67,8 +67,20 @@ export default [
 			format: 'umd'
 		},
 		plugins: [
-			resolve(), // so Rollup can find `ms`
-			commonjs() // so Rollup can convert `ms` to an ES module
+      external(),
+      ts(),
+      alias({
+        resolve: ['.ts', '.tsx'],
+        entries: resolveEntries(),
+      }),
+      resolve(),
+      commonjs({
+        include: ['node_modules/**'],
+      }),
+      terser(),
+      production && filesize(),
+			//resolve(), // so Rollup can find `ms`
+			//commonjs() // so Rollup can convert `ms` to an ES module
 		]
 	},
 ];

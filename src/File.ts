@@ -13,6 +13,7 @@ export type FileArray = Array<FileOptions|string>
 export interface FileOptions {
   name?: string
   path?: string
+  size?: number
 }
 
 export function getIncrementalId() {
@@ -27,6 +28,8 @@ export class File extends Emitter {
   id: number
   computedPath?: string = null
   parent?: Group = null
+  size: number = 0
+  loaded: number = 0
 
   constructor(args: FileOptions | string) {
     super();
@@ -38,6 +41,14 @@ export class File extends Emitter {
     this.status = LoadingStatus.IDLE
     this.path = args.path;
     this.name = args.name;
+    this.size = args.size ? args.size : 0;
+
+    this.on('progress', (event: ProgressEvent) => {
+      this.loaded = event.loaded
+      if (this.size === 0) {
+        this.size = event.total
+      }
+    })
   }
   
   static fromString(def): File {
@@ -51,6 +62,10 @@ export class File extends Emitter {
 
   get isLoaded(): boolean {
     return this.status === LoadingStatus.LOADED
+  }
+  
+  load(): Promise<File|File[]> {
+    return this.parent.context.load(this);
   }
 
   handleEventsIfLoaded(bubling = true) {
