@@ -1,4 +1,4 @@
-# assets-loader
+# loader
 
 ## Description
 A library to handle assets loading.
