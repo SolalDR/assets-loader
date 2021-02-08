@@ -3,6 +3,12 @@
 ## Description
 A library to handle assets loading.
 
+## Installation
+
+```
+npm i @solaldr/loader
+```
+
 ## How to use 
 
 ### Basic use
