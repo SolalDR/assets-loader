@@ -1,7 +1,7 @@
 # loader
 
-[![build](https://github.com/solaldr/rollup-typescript-starter-lib/workflows/build/badge.svg?branch=master)](https://github.com/solaldr/loader/actions?workflow=build)
-[![version](https://img.shields.io/github/package-json/v/solaldr/rollup-typescript-starter-lib)](https://github.com/solaldr/loader)
+[![build](https://github.com/solaldr/loader/workflows/build/badge.svg?branch=master)](https://github.com/solaldr/loader/actions?workflow=build)
+[![version](https://img.shields.io/github/package-json/v/solaldr/loader)](https://github.com/solaldr/loader)
 
 ## Description
 A library to handle assets loading.
