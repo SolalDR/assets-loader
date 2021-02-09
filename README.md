@@ -22,11 +22,11 @@ import { ThreeLoader } from '@solaldr/loader/examples/ThreeLoader'
 
 const assetsLoader = new AssetsLoader([
   {
-    test: /\/.(?:png|jpe?g)/,
+    test: /\.(?:png|jpe?g)/,
     loader:  new ThreeLoader(new THREE.TextureLoader())
   },
   {
-    test: /\/.(?:gltf|glb)/,
+    test: /\.(?:glb|gltf)/,
     loader:  new ThreeLoader(new THREE.GLTFLoader())
   }
 ])
