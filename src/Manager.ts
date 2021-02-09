@@ -93,7 +93,7 @@ export class Manager extends Emitter {
       file.computePath();
 
       if (this.files.get(file.computedPath)) {
-        resolve(file);
+        resolve(file.subject);
         return;
       }
 

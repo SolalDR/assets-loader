@@ -6,7 +6,7 @@
     "email" : "hello@solaldussout-revel.dev",
     "url" : "https://solaldussout-revel.dev"
   },
-  "version": "0.0.11",
+  "version": "0.0.12",
   "main": "dist/index.js",
   "module": "dist/index.esm.js",
   "browser": "dist/index.umd.js",
