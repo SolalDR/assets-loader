@@ -39,15 +39,15 @@ export class Manager extends Emitter {
     return this.defaultGroup.get(name)
   }
 
-  loadGroup(GroupOptions) {
+  async loadGroup(GroupOptions): Promise<Group> {
     const group = this.addGroup(GroupOptions);
-    this.load(group);
+    await this.load(group);
     return group;
   }
 
-  loadFile(def: string | FileOptions) {
+  async loadFile(def: string | FileOptions): Promise<unknown> {
     const file = this.addFile(def);
-    return this.load(file);
+    return (await this.load(file)) as File
   }
 
   addFile(def: FileOptions | string): File {
@@ -92,9 +92,10 @@ export class Manager extends Emitter {
       file.status = LoadingStatus.PENDING;
       file.computePath();
 
-      if (this.files.get(file.computedPath)) {
-        resolve(file.subject);
-        return;
+      if (this.files.has(file.computedPath)) {
+        const cachedFile = this.files.get(file.computedPath)
+        resolve(cachedFile)
+        return
       }
 
       loader.load(file).then(object => {
@@ -102,7 +103,7 @@ export class Manager extends Emitter {
         file.subject = object;
         file.status = LoadingStatus.LOADED
         file.handleEventsIfLoaded()
-        resolve(file.subject);
+        resolve(file);
       }).catch((error) => {
         console.error(error);
       })

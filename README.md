@@ -18,7 +18,7 @@ npm i @solaldr/loader
 
 ``` javascript
 import AssetsLoader from '@solaldr/loader'
-import { ThreeLoader } from '@solaldr/loader/examples/ThreeLoader'
+import { ThreeLoader } from '@solaldr/loader/dist/index.esm'
 
 const assetsLoader = new AssetsLoader([
   {

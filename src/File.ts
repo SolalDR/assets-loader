@@ -30,6 +30,7 @@ export class File extends Emitter {
   parent?: Group = null
   size: number = 0
   loaded: number = 0
+  subject: null | unknown = null
 
   constructor(args: FileOptions | string) {
     super();

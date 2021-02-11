@@ -3,7 +3,7 @@ const Package = require('../dist/index')
 class FakeLoader extends Package.Loader {
   load(file) {
     return new Promise((resolve, reject) => {
-      setTimeout(() => resolve({ file }), Math.random() * 1000 + 1000)
+      setTimeout(() => resolve("Subject loaded"), Math.random() * 1000 + 1000)
     })
   }
 }
@@ -16,22 +16,9 @@ const AssetsManager = new Package.Manager([
 ])
 
 
-const a = AssetsManager.addGroup({
-	name: 'test',
-	files: ['./test.png'],
-	groups: [
-		{
-			name: "bruh",
-			files: [
-				'./bruh.png',
-				{
-					name: 'test',
-					path: './test/boulibou.png'
-				}
-			]
-		}
-	]
+AssetsManager.loadFile('./test.png').then((file) => {
+	console.log(file)
+	AssetsManager.loadFile('./test.png').then((file2) => {
+		console.log(file2)
+	})
 })
-
-const b = AssetsManager.get('test');
-console.log("hello", b)
